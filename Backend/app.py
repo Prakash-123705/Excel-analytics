@@ -1,4 +1,5 @@
 # backend/app.py
+from flask import Flask, send_from_directory
 import os
 import io
 import pandas as pd
@@ -11,7 +12,7 @@ import datetime
 from functools import wraps
 
 # --- Configuration ---
-app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
+app = Flask(__name__, static_folder='../frontend/dist', static_url_path='/')
 app.config['SECRET_KEY'] = 'your_super_secret_key_change_me' # IMPORTANT: Change this in production
 app.config['UPLOAD_FOLDER'] = 'uploads'
 ALLOWED_EXTENSIONS = {'csv', 'xlsx', 'xls'}
@@ -231,22 +232,13 @@ if __name__ == '__main__':
         os.makedirs(app.config['UPLOAD_FOLDER'])
     app.run(debug=True, port=5001) # Running on a different port than React dev server
 
-from flask import Flask, send_from_directory
-import os
 
-app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
 
-# serve React frontend
-@app.route('/')
-def serve():
-    return send_from_directory(app.static_folder, 'index.html')
-
-# for React routing (client-side)
-@app.errorhandler(404)
-def not_found(e):
-    return send_from_directory(app.static_folder, 'index.html')
-
-# API routes
-@app.route('/api/hello')
-def hello():
-    return {'message': 'Hello from Flask!'}
+## Serve React frontend
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')

@@ -28,14 +28,14 @@ const App = () => {
     }, []);
 
     const handleLogin = (userData, authToken) => {
-        localStorage.setItem('authToken', authToken);
-        localStorage.setItem('userEmail', userData.email);
-        if (userData.name) {
-            localStorage.setItem('userName', userData.name);
-        }
-        setToken(authToken);
-        setUser(userData);
-        setPage('dashboard');
+    localStorage.setItem('authToken', authToken);
+    localStorage.setItem('userEmail', userData.email);
+    // Always save name, fallback to email prefix if missing
+    const name = userData.name && userData.name.trim() ? userData.name.trim() : (userData.email ? userData.email.split('@')[0] : 'User');
+    localStorage.setItem('userName', name);
+    setToken(authToken);
+    setUser({ ...userData, name });
+    setPage('dashboard');
     };
 
     const handleLogout = () => {
@@ -149,8 +149,12 @@ const AuthPage = ({ type, onLogin, setPage }) => {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'An unknown error occurred.');
             if (type === 'login') {
-                onLogin({ email: data.email, name: data.name }, data.token);
+                // Always pass name, fallback to email prefix if missing
+                const name = data.name && data.name.trim() ? data.name.trim() : (data.email ? data.email.split('@')[0] : 'User');
+                onLogin({ email: data.email, name }, data.token);
             } else {
+                // Save name in localStorage for immediate dashboard greeting after signup
+                localStorage.setItem('userName', name.trim());
                 setSuccessMessage('Registration successful! Please log in.');
                 setTimeout(() => setPage('login'), 2000);
             }

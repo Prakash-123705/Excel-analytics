@@ -232,6 +232,6 @@ if __name__ == '__main__':
         os.makedirs(app.config['UPLOAD_FOLDER'])
     app.run(debug=True, port=5001) # Running on a different port than React dev server
 
-
-
-## Serve React frontend
+@app.route("/")
+def home():
+    return "Excel Analytics Backend is Running!"

@@ -216,22 +216,3 @@ def get_history(current_user):
     user_files.sort(key=lambda x: x['upload_time'], reverse=True)
     return jsonify(user_files)
 
-# --- Serve React App ---
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    """Serves the static files for the React app."""
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
-
-if __name__ == '__main__':
-    # Create upload directory if it doesn't exist
-    if not os.path.exists(app.config['UPLOAD_FOLDER']):
-        os.makedirs(app.config['UPLOAD_FOLDER'])
-    app.run(debug=True, port=5001) # Running on a different port than React dev server
-
-@app.route("/")
-def home():
-    return "Excel Analytics Backend is Running!"

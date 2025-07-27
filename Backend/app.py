@@ -1,5 +1,4 @@
 # backend/app.py
-from flask import Flask, send_from_directory
 import os
 import io
 import pandas as pd
@@ -23,19 +22,6 @@ CORS(app, resources={r"/api/*": {"origins": [
     "https://excel-analytics-z62i.onrender.com"
 ]}})
 
-
-def serve_react_app():
-    return send_from_directory(app.static_folder, 'index.html')
-
-# Also catch all other routes (React routing)
-@app.route('/<path:path>')
-def static_proxy(path):
-    file_path = os.path.join(app.static_folder, path)
-    if os.path.isfile(file_path):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
-# --- In-memory "Database" for Demo Purposes ---
 # In a real application, replace this with a proper database like PostgreSQL or SQLite
 users = {}
 files_db = {}
@@ -245,3 +231,23 @@ if __name__ == '__main__':
         os.makedirs(app.config['UPLOAD_FOLDER'])
     app.run(debug=True, port=5001) # Running on a different port than React dev server
 
+from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import CORS
+import os
+
+app = Flask(__name__, static_folder="static", static_url_path="/")
+CORS(app)
+
+# Your API routes
+@app.route('/api/hello')
+def hello():
+    return jsonify({'message': 'Hello from Flask!'})
+
+# Serve React frontend
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_react(path):
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')

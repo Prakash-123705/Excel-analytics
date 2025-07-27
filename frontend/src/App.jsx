@@ -30,12 +30,12 @@ const App = () => {
     const handleLogin = (userData, authToken) => {
     localStorage.setItem('authToken', authToken);
     localStorage.setItem('userEmail', userData.email);
-    // Prefer name from backend, else fallback to localStorage, else email prefix
+    // Always use the name from localStorage if available, else backend, else email prefix
     let name = '';
-    if (userData.name && userData.name.trim()) {
-        name = userData.name.trim();
-    } else if (localStorage.getItem('userName') && localStorage.getItem('userName').trim()) {
+    if (localStorage.getItem('userName') && localStorage.getItem('userName').trim()) {
         name = localStorage.getItem('userName').trim();
+    } else if (userData.name && userData.name.trim()) {
+        name = userData.name.trim();
     } else if (userData.email) {
         name = userData.email.split('@')[0];
     } else {

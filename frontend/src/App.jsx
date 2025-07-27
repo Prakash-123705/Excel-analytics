@@ -3,7 +3,8 @@ import { useDropzone } from 'react-dropzone';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
 import { FileText, UploadCloud, Settings, BarChart2, History, HelpCircle, LogOut, Loader2, AlertTriangle, Server, CheckCircle, Clock, Menu, X } from 'lucide-react';
 
-import { API_URL } from './api'; // or '../api' based on file location
+
+const API_URL = 'https://excel-background.onrender.com/api';
 
 const COLORS = ['#3b82f6', '#22c55e', '#f97316', '#ef4444', '#8b5cf6', '#eab308'];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB

@@ -30,8 +30,17 @@ const App = () => {
     const handleLogin = (userData, authToken) => {
     localStorage.setItem('authToken', authToken);
     localStorage.setItem('userEmail', userData.email);
-    // Always save name, fallback to email prefix if missing
-    const name = userData.name && userData.name.trim() ? userData.name.trim() : (userData.email ? userData.email.split('@')[0] : 'User');
+    // Prefer name from backend, else fallback to localStorage, else email prefix
+    let name = '';
+    if (userData.name && userData.name.trim()) {
+        name = userData.name.trim();
+    } else if (localStorage.getItem('userName') && localStorage.getItem('userName').trim()) {
+        name = localStorage.getItem('userName').trim();
+    } else if (userData.email) {
+        name = userData.email.split('@')[0];
+    } else {
+        name = 'User';
+    }
     localStorage.setItem('userName', name);
     setToken(authToken);
     setUser({ ...userData, name });

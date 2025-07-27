@@ -601,19 +601,20 @@ body {
 
 /* Full width dashboard grid for analysis and summary */
 .dashboard-grid-full {
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   box-sizing: border-box;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .dashboard-grid-main-full {
   width: 100%;
-  max-width: 100vw;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -622,13 +623,13 @@ body {
 
 .dashboard-grid-side-full {
   width: 100%;
-  max-width: 100vw;
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-/* Make glass cards expand to full width in dashboard */
 .glass-card {
   background: var(--glass-bg);
   border-radius: 1rem;
@@ -636,9 +637,31 @@ body {
   padding: 1.5rem;
   margin-bottom: 2rem;
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
   margin-left: 0;
   margin-right: 0;
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 1500px) {
+
+  .dashboard-grid-full,
+  .dashboard-grid-main-full,
+  .dashboard-grid-side-full {
+    max-width: 100vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .dashboard-grid-full,
+  .dashboard-grid-main-full,
+  .dashboard-grid-side-full {
+    max-width: 100vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 }

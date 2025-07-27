@@ -356,9 +356,9 @@ const Dashboard = ({ token }) => {
                     Summary
                 </button>
             </div>
-            <div className="dashboard-grid">
+            <div className="dashboard-grid-full">
                 {section === 'summary' && (
-                    <div className="dashboard-grid-main">
+                    <div className="dashboard-grid-main-full">
                         <DataSummary summary={analysisData.summary} />
                         <GlassCard title="Dataset Overview">
                             <div className="overview-grid">
@@ -384,7 +384,7 @@ const Dashboard = ({ token }) => {
                     </div>
                 )}
                 {section === 'analysis' && (
-                    <div className="dashboard-grid-side" style={{display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%'}}>
+                    <div className="dashboard-grid-side-full" style={{display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%'}}>
                         <DynamicChartGallery charts={analysisData.charts} />
                     </div>
                 )}

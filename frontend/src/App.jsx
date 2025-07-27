@@ -242,8 +242,15 @@ const Dashboard = ({ token }) => {
     const [section, setSection] = useState('analysis'); // Section toggle
 
     useEffect(() => {
-        const name = localStorage.getItem('userName') || localStorage.getItem('userEmail')?.split('@')[0] || 'User';
-        setUserName(name.charAt(0).toUpperCase() + name.slice(1));
+        const name = localStorage.getItem('userName');
+        if (name && name.trim()) {
+            setUserName(name.trim());
+        } else {
+            // fallback to email prefix if name is missing
+            const email = localStorage.getItem('userEmail');
+            const fallback = email ? email.split('@')[0] : 'User';
+            setUserName(fallback.charAt(0).toUpperCase() + fallback.slice(1));
+        }
     }, []);
 
     const onDrop = useCallback(async (acceptedFiles, fileRejections) => {

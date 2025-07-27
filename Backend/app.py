@@ -18,7 +18,12 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 ALLOWED_EXTENSIONS = {'csv', 'xlsx', 'xls'}
 
 # Enable CORS for the React frontend
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+CORS(app, resources={r"/api/*": {"origins": [
+    "http://localhost:5173",
+    "https://excel-analytics-z62i.onrender.com"
+]}})
+
+
 
 # --- In-memory "Database" for Demo Purposes ---
 # In a real application, replace this with a proper database like PostgreSQL or SQLite

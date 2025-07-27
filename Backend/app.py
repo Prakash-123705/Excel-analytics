@@ -231,23 +231,22 @@ if __name__ == '__main__':
         os.makedirs(app.config['UPLOAD_FOLDER'])
     app.run(debug=True, port=5001) # Running on a different port than React dev server
 
-from flask import Flask, jsonify, request, send_from_directory
-from flask_cors import CORS
+from flask import Flask, send_from_directory
 import os
 
-app = Flask(__name__, static_folder="static", static_url_path="/")
-CORS(app)
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
 
-# Your API routes
+# serve React frontend
+@app.route('/')
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
+
+# for React routing (client-side)
+@app.errorhandler(404)
+def not_found(e):
+    return send_from_directory(app.static_folder, 'index.html')
+
+# API routes
 @app.route('/api/hello')
 def hello():
-    return jsonify({'message': 'Hello from Flask!'})
-
-# Serve React frontend
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve_react(path):
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
+    return {'message': 'Hello from Flask!'}

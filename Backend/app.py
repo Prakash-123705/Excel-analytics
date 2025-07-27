@@ -1,5 +1,5 @@
 # backend/app.py
-
+from flask import Flask, send_from_directory
 import os
 import io
 import pandas as pd
@@ -24,7 +24,17 @@ CORS(app, resources={r"/api/*": {"origins": [
 ]}})
 
 
+def serve_react_app():
+    return send_from_directory(app.static_folder, 'index.html')
 
+# Also catch all other routes (React routing)
+@app.route('/<path:path>')
+def static_proxy(path):
+    file_path = os.path.join(app.static_folder, path)
+    if os.path.isfile(file_path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 # --- In-memory "Database" for Demo Purposes ---
 # In a real application, replace this with a proper database like PostgreSQL or SQLite
 users = {}

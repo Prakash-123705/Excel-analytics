@@ -24,3 +24,6 @@ pip install -r requirements.txt
 
 # Run the app
 python app.py
+
+## Deployment Link
+https://excel-analytics-z62i.onrender.com
